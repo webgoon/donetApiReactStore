@@ -2,7 +2,7 @@
 A core project to run Dotnet API to use a perferable front end to fetch data.
 
 
-# dotnet new -l     << This gives you a list of possibly to install .net related.
+# dotnet new -l     << This gives you a list of install(s) .Net related.
 
 dotnet new gitignore 
 
