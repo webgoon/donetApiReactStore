@@ -1,9 +1,8 @@
-import { Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Container, CssBaseline } from "@mui/material";
 import Catalog from "../../features/catalog/Catalog";
-import { Product } from "../models/product";
-
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import Header from "./Header";
+import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material/styles';
+import { useState } from "react";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -11,43 +10,35 @@ theme = responsiveFontSizes(theme);
 
 
 function App() {
+
+  const [darkMode, setDarkMode] = useState(false);
+  const palletteType = darkMode ? 'dark' : 'light';
   
- 
-  const [products, setProducts] = useState<Product[]>([]);
+  const theme = createTheme({
+    palette: {
+      mode: palletteType,
+      background: {default: palletteType === 'light' ? '#eaeaea': '#121212'}  // This Checks the condition of the state setting the background
+    }
+  })
 
-
-    useEffect(() => {
-
-      fetch('http://localhost:5019/api/Products')
-      .then(response => response.json())
-      .then(data => setProducts(data))
-
-    }, [])
-  
-  function addProduct(){
-    setProducts(prevState => 
-              [...prevState, 
-                {
-                id: prevState.length + 101,
-                name: 'product ' + (prevState.length + 1), 
-                price: (prevState.length * 100) + 100,
-                brand: 'some brand',
-                description: 'some description',
-                pictureUrl: '/images/logo192.png',
-              }])
+  function handleThemeChange() {
+    
+    setDarkMode(!darkMode);
   }
-
-  //console.log('Hello World',  products);
 
 
   return (
-    <div className="app">
-      
-      <Typography variant="h1">Dot Net React Store</Typography>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
 
-      <Catalog products={products} addProduct={addProduct} />
+      <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
+
+      <Container>
+         <Catalog  />
+      </Container>
+     
         
-    </div>
+    </ThemeProvider>
   );
 }
 
